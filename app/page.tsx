@@ -99,7 +99,7 @@ export default function Home() {
         </div>
         {/* Orbital Ring 2 */}
         <div className="absolute w-[800px] h-[800px] md:w-[1100px] md:h-[1100px] rounded-full border border-white/5 animate-spin-slow-reverse">
-          <div className="absolute bottom-0 right-1/4 w-1.5 h-1.5 bg-white/80 rounded-full shadow-[0_0_15px_3px_rgba(255,255,255,0.6)] translate-x-1/2 translate-y-1/2" />
+          <div className="absolute right-0 top-1/2 w-1.5 h-1.5 bg-white/80 rounded-full shadow-[0_0_15px_3px_rgba(255,255,255,0.6)] translate-x-1/2 -translate-y-1/2" />
         </div>
       </motion.div>
 
