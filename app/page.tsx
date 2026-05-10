@@ -18,6 +18,7 @@ const STATS = [
 export default function Home() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -73,14 +74,42 @@ export default function Home() {
         animate={{ y: 0 }}
         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div className="w-1/3">
-          <button className="text-[10px] uppercase tracking-widest text-neutral-400 hover:text-white transition-colors duration-300 flex items-center gap-1 opacity-50 hover:opacity-100 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">
-            <span className="w-3 h-[1px] bg-current block" />
-            Skip
+        <div className="flex w-1/3 items-center gap-3">
+          <a
+            href="#home"
+            className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-black/40 opacity-80 transition-all duration-300 hover:border-white/30 hover:opacity-100 hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.35)] md:hidden"
+            aria-label="Velastro home"
+          >
+            <Image
+              src={velastroLogo}
+              alt=""
+              width={40}
+              height={40}
+              priority
+              className="h-full w-full object-cover"
+            />
+          </a>
+        </div>
+
+        <div className="flex items-center gap-3 md:hidden">
+          <button
+            type="button"
+            onClick={() => setIsMobileMenuOpen((open) => !open)}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-black/40 text-white transition-all duration-300 hover:border-white/30 hover:bg-black/60"
+            aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-navigation"
+          >
+            <span className="sr-only">Toggle navigation menu</span>
+            <span className="flex flex-col gap-1.5">
+              <span className={`block h-px w-4 bg-current transition-transform duration-300 ${isMobileMenuOpen ? "translate-y-1.5 rotate-45" : ""}`} />
+              <span className={`block h-px w-4 bg-current transition-opacity duration-300 ${isMobileMenuOpen ? "opacity-0" : ""}`} />
+              <span className={`block h-px w-4 bg-current transition-transform duration-300 ${isMobileMenuOpen ? "-translate-y-1.5 -rotate-45" : ""}`} />
+            </span>
           </button>
         </div>
 
-        <div className="flex-1 flex justify-end items-center gap-8 text-[11px] font-medium tracking-[0.15em]">
+        <div className="hidden flex-1 items-center justify-end gap-8 text-[11px] font-medium tracking-[0.15em] md:flex">
           <a
             href="#home"
             className="relative mr-1 flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-black/40 opacity-80 transition-all duration-300 hover:border-white/30 hover:opacity-100 hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.35)]"
@@ -111,6 +140,33 @@ export default function Home() {
             INVESTORS
           </a>
         </div>
+
+        {isMobileMenuOpen ? (
+          <div
+            id="mobile-navigation"
+            className="absolute left-0 top-full w-full border-b border-white/10 bg-neutral-950/95 px-6 py-5 backdrop-blur-xl md:hidden"
+          >
+            <div className="flex flex-col gap-4 text-[11px] font-medium tracking-[0.18em]">
+              {NAV_LINKS.map((link) => (
+                <a
+                  key={link}
+                  href={`#${link.toLowerCase().replace(" ", "-")}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-neutral-300 transition-colors duration-300 hover:text-white"
+                >
+                  {link}
+                </a>
+              ))}
+              <a
+                href="#investors"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="mt-2 inline-flex items-center justify-center border border-white/20 px-5 py-3 text-white transition-all duration-300 hover:bg-white hover:text-black"
+              >
+                INVESTORS
+              </a>
+            </div>
+          </div>
+        ) : null}
       </motion.nav>
 
       {/* Floating Live Stats */}
