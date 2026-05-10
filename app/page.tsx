@@ -6,19 +6,57 @@ import { motion } from "framer-motion";
 import { Crosshair, Orbit, ShieldCheck, Activity } from "lucide-react";
 import ContactSection from "./components/ContactSection";
 import velastroLogo from "../Velastro_logos-3.png";
+import { translations, type Lang } from "./i18n";
 
-const NAV_LINKS = ["HOME", "SOLUTION", "TEAM", "CONTACT US"];
+const NAV_LINKS = [
+  { id: "home", translationKey: "home" },
+  { id: "solution", translationKey: "solution" },
+  { id: "team", translationKey: "team" },
+  { id: "contact-us", translationKey: "contact" },
+] as const;
 
-const STATS = [
-  { label: "Precision", value: "<1cm" },
-  { label: "Uptime", value: "99.999%" },
-  { label: "Latency", value: "2ms" },
-];
+const LANGUAGES = [
+  { code: "en", label: "EN" },
+  { code: "de", label: "DE" },
+  { code: "cn", label: "CN" },
+] as const satisfies ReadonlyArray<{ code: Lang; label: string }>;
+
+const STAT_VALUES = ["<1cm", "99.999%", "2ms"];
+
+const TECH_FEATURES = [
+  { icon: Crosshair },
+  { icon: ShieldCheck },
+  { icon: Orbit },
+] as const;
 
 export default function Home() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const [lang, setLang] = useState<Lang>("en");
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("lang");
+      if (stored && (stored === "en" || stored === "de" || stored === "cn")) {
+        setLang(stored as Lang);
+      }
+    } catch {
+      // Ignore storage failures in restricted browser contexts.
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("lang", lang);
+      document.documentElement.lang = lang === "cn" ? "zh-CN" : lang;
+    } catch {
+      // Ignore storage failures in restricted browser contexts.
+    }
+  }, [lang]);
+
+  const t = translations[lang];
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -40,7 +78,7 @@ export default function Home() {
     };
   }, []);
 
-  const titleText = "THE NEXT LAYER OF NAVIGATION".split(" ");
+  const titleText = t.titleText.split(" ");
 
   return (
     <main className="min-h-screen bg-neutral-950 overflow-hidden relative text-white font-sans selection:bg-white/20">
@@ -126,19 +164,35 @@ export default function Home() {
           </a>
           {NAV_LINKS.map((link) => (
             <a
-              key={link}
-              href={`#${link.toLowerCase().replace(" ", "-")}`}
+              key={link.id}
+              href={`#${link.id}`}
               className="text-neutral-300 hover:text-white transition-all duration-300 hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.4)]"
             >
-              {link}
+              {t.navLinks[link.translationKey]}
             </a>
           ))}
           <a
             href="#investors"
             className="px-5 py-2.5 border border-white/20 text-white hover:bg-white hover:text-black transition-all duration-500 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] ml-4"
           >
-            INVESTORS
+            {t.investors}
           </a>
+
+          <div className="ml-2 inline-flex items-center gap-1 border-l border-white/10 pl-4" aria-label={t.languageLabel}>
+            <span className="sr-only">{t.languageLabel}</span>
+            {LANGUAGES.map((language) => (
+              <button
+                key={language.code}
+                type="button"
+                onClick={() => setLang(language.code)}
+                className={`px-2 py-1 text-[11px] rounded-sm transition-colors duration-200 ${lang === language.code ? "bg-white text-black" : "text-neutral-300 hover:text-white"}`}
+                aria-label={`${t.languageLabel}: ${language.label}`}
+                aria-pressed={lang === language.code}
+              >
+                {language.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {isMobileMenuOpen ? (
@@ -146,25 +200,43 @@ export default function Home() {
             id="mobile-navigation"
             className="absolute left-0 top-full w-full border-b border-white/10 bg-neutral-950/95 px-6 py-5 backdrop-blur-xl md:hidden"
           >
-            <div className="flex flex-col gap-4 text-[11px] font-medium tracking-[0.18em]">
-              {NAV_LINKS.map((link) => (
+              <div className="flex flex-col gap-4 text-[11px] font-medium tracking-[0.18em]">
+                {NAV_LINKS.map((link) => (
+                  <a
+                    key={link.id}
+                    href={`#${link.id}`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-neutral-300 transition-colors duration-300 hover:text-white"
+                  >
+                    {t.navLinks[link.translationKey]}
+                  </a>
+                ))}
                 <a
-                  key={link}
-                  href={`#${link.toLowerCase().replace(" ", "-")}`}
+                  href="#investors"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-neutral-300 transition-colors duration-300 hover:text-white"
+                  className="mt-2 inline-flex items-center justify-center border border-white/20 px-5 py-3 text-white transition-all duration-300 hover:bg-white hover:text-black"
                 >
-                  {link}
+                  {t.investors}
                 </a>
-              ))}
-              <a
-                href="#investors"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="mt-2 inline-flex items-center justify-center border border-white/20 px-5 py-3 text-white transition-all duration-300 hover:bg-white hover:text-black"
-              >
-                INVESTORS
-              </a>
-            </div>
+
+                <div className="mt-4 flex items-center gap-2" aria-label={t.languageLabel}>
+                  <span className="mr-2 text-neutral-500">{t.languageLabel}</span>
+                  {LANGUAGES.map((language) => (
+                    <button
+                      key={language.code}
+                      type="button"
+                      onClick={() => {
+                        setLang(language.code);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className={`px-3 py-2 text-[11px] rounded-sm ${lang === language.code ? "bg-white text-black" : "text-neutral-300 hover:text-white"}`}
+                      aria-pressed={lang === language.code}
+                    >
+                      {language.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
           </div>
         ) : null}
       </motion.nav>
@@ -177,20 +249,20 @@ export default function Home() {
         transition={{ duration: 1, delay: 1.5 }}
       >
         <div className="flex items-center gap-2 mb-3 text-[10px] text-neutral-400 uppercase tracking-widest">
-          <Activity className="w-3 h-3 text-white/70" /> Live Telemetry
+          <Activity className="w-3 h-3 text-white/70" /> {t.liveTelemetry}
         </div>
         <div className="space-y-2">
-          {STATS.map((stat, i) => (
+          {STAT_VALUES.map((value, i) => (
             <div key={i} className="flex justify-between items-center gap-8 border-b border-white/5 pb-1 last:border-0 last:pb-0">
-              <span className="text-xs text-neutral-300 font-mono">{stat.label}</span>
-              <span className="text-sm font-mono tracking-wider animate-pulse text-white">{stat.value}</span>
+              <span className="text-xs text-neutral-300 font-mono">{t.stats[i] ?? ""}</span>
+              <span className="text-sm font-mono tracking-wider animate-pulse text-white">{value}</span>
             </div>
           ))}
         </div>
       </motion.div>
 
       {/* Hero Section */}
-      <section className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 text-center pt-20">
+      <section id="home" className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 text-center pt-20">
         <motion.h1 
           className="relative z-10 text-6xl md:text-9xl font-black tracking-[0.25em] mb-8"
           initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
@@ -219,15 +291,15 @@ export default function Home() {
            transition={{ duration: 2, delay: 2.5 }}
            className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 text-neutral-400 hover:text-white transition-colors duration-500"
         >
-          <span className="text-[10px] uppercase tracking-widest">Explore Architecture</span>
+          <span className="text-[10px] uppercase tracking-widest">{t.exploreArchitecture}</span>
           <div className="w-[1px] h-12 bg-gradient-to-b from-current to-transparent" />
         </motion.div>
       </section>
 
       {/* Partners Section */}
-      <section className="relative z-10 py-20 border-y border-white/5 bg-neutral-950/30 backdrop-blur-sm">
+      <section id="investors" className="relative z-10 py-20 border-y border-white/5 bg-neutral-950/30 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-6">
-          <p className="text-[10px] text-center text-neutral-400 uppercase tracking-[0.3em] mb-12">Trusted by Industry Leaders</p>
+          <p className="text-[10px] text-center text-neutral-400 uppercase tracking-[0.3em] mb-12">{t.partnersKicker}</p>
           <div className="flex flex-wrap justify-center gap-12 md:gap-24 opacity-40 grayscale">
              {/* Mock Logos using text for structural matching */}
             {['LOCKHEED', 'NORTHROP', 'AIRBUS', 'THALES', 'BOEING'].map((partner, i) => (
@@ -244,7 +316,7 @@ export default function Home() {
       </section>
 
       {/* Technical Comparison Section */}
-      <section className="relative z-10 px-6 py-32 max-w-6xl mx-auto">
+      <section id="solution" className="relative z-10 px-6 py-32 max-w-6xl mx-auto">
         <motion.div 
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -255,37 +327,30 @@ export default function Home() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 pb-8 relative group">
             <div className="absolute bottom-0 left-0 w-full h-[0.5px] bg-neutral-800 group-hover:bg-neutral-600 transition-colors duration-500" />
             <div>
-              <h3 className="text-2xl md:text-4xl font-normal tracking-wide mb-3">Navigating the resilient future</h3>
-              <p className="text-neutral-400 tracking-wider text-sm md:text-base">— from Earth to deep space.</p>
+              <h3 className="text-2xl md:text-4xl font-normal tracking-wide mb-3">{t.technical.title}</h3>
+              <p className="text-neutral-400 tracking-wider text-sm md:text-base">- {t.technical.subtitle}</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-neutral-300 text-xs md:text-sm leading-relaxed font-normal">
-            <div className="space-y-6 group cursor-default">
-              <Crosshair className="text-neutral-400 w-5 h-5 mb-8 group-hover:text-white transition-colors duration-500 group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
-              <div className="font-semibold text-white tracking-wider uppercase mb-4 text-[10px] md:text-xs">Precision Control</div>
-              <p className="group-hover:text-neutral-300 transition-colors duration-500">Sub-millimeter accuracy through decentralized satellite networking. Eradicating single points of failure in traditional GNSS architectures.</p>
-            </div>
-            
-            <div className="space-y-6 relative md:pl-12 group cursor-default">
-              <div className="hidden md:block absolute left-0 top-0 w-[0.5px] h-full bg-neutral-800 transition-colors duration-500 group-hover:bg-neutral-600" />
-              <ShieldCheck className="text-neutral-400 w-5 h-5 mb-8 group-hover:text-white transition-colors duration-500 group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
-              <div className="font-semibold text-white tracking-wider uppercase mb-4 text-[10px] md:text-xs">Cryptographic Resilience</div>
-              <p className="group-hover:text-neutral-300 transition-colors duration-500">Military-grade anti-spoofing and anti-jamming protocols natively embedded at the hardware layer with quantum-resistant encryption.</p>
-            </div>
-            
-            <div className="space-y-6 relative md:pl-12 group cursor-default">
-              <div className="hidden md:block absolute left-0 top-0 w-[0.5px] h-full bg-neutral-800 transition-colors duration-500 group-hover:bg-neutral-600" />
-              <Orbit className="text-neutral-400 w-5 h-5 mb-8 group-hover:text-white transition-colors duration-500 group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
-              <div className="font-semibold text-white tracking-wider uppercase mb-4 text-[10px] md:text-xs">Deep Space Ready</div>
-              <p className="group-hover:text-neutral-300 transition-colors duration-500">Extended operational range designed for cislunar navigation and multi-planetary autonomous fleet management scaling.</p>
-            </div>
+            {t.technical.cards.map((card, i) => {
+              const Icon = TECH_FEATURES[i]?.icon ?? Crosshair;
+
+              return (
+                <div key={card.title} className={`space-y-6 group cursor-default ${i > 0 ? "relative md:pl-12" : ""}`}>
+                  {i > 0 ? <div className="hidden md:block absolute left-0 top-0 w-[0.5px] h-full bg-neutral-800 transition-colors duration-500 group-hover:bg-neutral-600" /> : null}
+                  <Icon className="text-neutral-400 w-5 h-5 mb-8 group-hover:text-white transition-colors duration-500 group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
+                  <div className="font-semibold text-white tracking-wider uppercase mb-4 text-[10px] md:text-xs">{card.title}</div>
+                  <p className="group-hover:text-neutral-300 transition-colors duration-500">{card.description}</p>
+                </div>
+              );
+            })}
           </div>
         </motion.div>
       </section>
 
       {/* Contact Section */}
-      <ContactSection />
+      <ContactSection lang={lang} />
     </main>
   );
 }
