@@ -18,19 +18,19 @@ export const translations = {
       subtitle: "from Earth to deep space.",
       cards: [
         {
-          title: "Precision Control",
+          title: "Stronger Singal",
           description:
-            "Sub-millimeter accuracy through decentralized satellite networking. Eradicating single points of failure in traditional GNSS architectures.",
+            "LEO satellites operate much closer to Earth than traditional GNSS, enabling stronger received signals and faster-changing geometry.",
         },
         {
-          title: "Cryptographic Resilience",
+          title: "Multi-Source Resilience",
           description:
-            "Military-grade anti-spoofing and anti-jamming protocols natively embedded at the hardware layer with quantum-resistant encryption.",
+            "Our system fuses signals from multiple space and terrestrial RF sources to improve robustness against interference, spoofing, and signal blockage.",
         },
         {
-          title: "Deep Space Ready",
+          title: "Built for Autonomy",
           description:
-            "Extended operational range designed for cislunar navigation and multi-planetary autonomous fleet management scaling.",
+            "Designed for drones, autonomous vehicles, maritime systems, and critical infrastructure that require reliable positioning in complex environments.",
         },
       ],
     },

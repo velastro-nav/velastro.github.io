@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Velastro - The Next Layer of Navigation",
+  title: "Velastro - The Next Generation of Navigation",
   description: "Space-tech infrastructure company building the next layer of navigation infrastructure.",
 };
 
