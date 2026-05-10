@@ -11,7 +11,7 @@ export const translations = {
     liveTelemetry: "Live Telemetry",
     stats: ["Precision", "Uptime", "Latency"],
     exploreArchitecture: "Explore Architecture",
-    titleText: "THE NEXT LAYER OF NAVIGATION",
+    titleText: "THE NEXT GENERATION OF NAVIGATION",
     partnersKicker: "Trusted by Industry Leaders",
     technical: {
       title: "Navigating the resilient future",
@@ -71,19 +71,19 @@ export const translations = {
       subtitle: "von der Erde bis in den Weltraum.",
       cards: [
         {
-          title: "Präzisionssteuerung",
+          title: "STÄRKERES SIGNAL",
           description:
-            "Submillimetergenaue Positionierung durch dezentrale Satellitennetzwerke. Einzelne Ausfallpunkte klassischer GNSS-Architekturen werden vermieden.",
+            "LEO-Satelliten operieren wesentlich näher an der Erde als herkömmliche GNSS-Systeme, was stärkere Empfangssignale und eine sich rascher verändernde Geometrie ermöglicht.",
         },
         {
-          title: "Kryptografische Resilienz",
+          title: "ROBUSTHEIT DURCH MULTI-SOURCING",
           description:
-            "Militärische Anti-Spoofing- und Anti-Jamming-Protokolle, nativ auf Hardware-Ebene integriert und mit quantenresistenter Verschlüsselung geschützt.",
+            "Unser System fusioniert Signale aus diversen weltraum- und bodengestützten HF-Quellen, um die Robustheit gegenüber Störungen, Spoofing und Signalblockaden zu erhöhen.",
         },
         {
-          title: "Bereit für den Weltraum",
+          title: "ENTWICKELT FÜR AUTONOMIE",
           description:
-            "Erweiterte Reichweite für cislunare Navigation und skalierbares Management autonomer Flotten über mehrere Planeten hinweg.",
+            "Konzipiert für Drohnen, autonome Fahrzeuge, maritime Systeme sowie kritische Infrastrukturen, die eine zuverlässige Positionsbestimmung in komplexen Umgebungen erfordern.",
         },
       ],
     },
@@ -117,26 +117,26 @@ export const translations = {
     liveTelemetry: "实时遥测",
     stats: ["精度", "可用性", "延迟"],
     exploreArchitecture: "探索架构",
-    titleText: "导航的下一层",
+    titleText: "新一代导航技术",
     partnersKicker: "深受行业领导者信赖",
     technical: {
       title: "驶向更具韧性的未来",
       subtitle: "从地球延伸至深空。",
       cards: [
         {
-          title: "精准控制",
+          title: "更强信号",
           description:
-            "通过去中心化卫星网络实现亚毫米级精度，消除传统 GNSS 架构中的单点故障风险。",
+            "LEO 卫星的运行轨道比传统 GNSS 卫星更接近地球，从而能够实现更强的接收信号以及变化更为迅速的几何构型。",
         },
         {
-          title: "加密韧性",
+          title: "多源韧性",
           description:
-            "军用级抗欺骗与抗干扰协议原生嵌入硬件层，并采用抗量子加密保护。",
+            "我们的系统融合了来自多个空间及地面射频源的信号，以增强针对干扰、欺骗及信号遮挡的鲁棒性。",
         },
         {
-          title: "面向深空",
+          title: "为自动化而生",
           description:
-            "扩展运行范围，支持地月空间导航与多星球自主舰队管理的规模化部署。",
+            "专为无人机、自动驾驶车辆、海事系统以及在复杂环境中需要可靠定位的关键基础设施而设计。",
         },
       ],
     },
