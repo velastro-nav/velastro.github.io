@@ -64,7 +64,7 @@ export const translations = {
     liveTelemetry: "Live-Telemetrie",
     stats: ["Präzision", "Verfügbarkeit", "Latenz"],
     exploreArchitecture: "ARCHITEKTUR ENTDECKEN",
-    titleText: "DIE NÄCHSTE SCHICHT DER NAVIGATION",
+    titleText: "Die nächste Generation der Navigation",
     partnersKicker: "Vertrauen führender Industriepartner",
     technical: {
       title: "Navigation für eine resiliente Zukunft",
