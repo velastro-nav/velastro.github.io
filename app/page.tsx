@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { Crosshair, Orbit, ShieldCheck, ChevronRight, Activity } from "lucide-react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { Crosshair, Orbit, ShieldCheck, Activity } from "lucide-react";
 import ContactSection from "./components/ContactSection";
+import velastroLogo from "../Velastro_logos-3.png";
 
 const NAV_LINKS = ["HOME", "SOLUTION", "TEAM", "CONTACT US"];
 
@@ -16,7 +18,6 @@ const STATS = [
 export default function Home() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isScrolled, setIsScrolled] = useState(false);
-  const { scrollYProgress, scrollY } = useScroll();
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -80,6 +81,20 @@ export default function Home() {
         </div>
 
         <div className="flex-1 flex justify-end items-center gap-8 text-[11px] font-medium tracking-[0.15em]">
+          <a
+            href="#home"
+            className="relative mr-1 flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-black/40 opacity-80 transition-all duration-300 hover:border-white/30 hover:opacity-100 hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.35)]"
+            aria-label="Velastro home"
+          >
+            <Image
+              src={velastroLogo}
+              alt=""
+              width={40}
+              height={40}
+              priority
+              className="h-full w-full object-cover"
+            />
+          </a>
           {NAV_LINKS.map((link) => (
             <a
               key={link}
@@ -121,7 +136,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 text-center pt-20">
         <motion.h1 
-          className="text-6xl md:text-9xl font-black tracking-[0.25em] mb-8"
+          className="relative z-10 text-6xl md:text-9xl font-black tracking-[0.25em] mb-8"
           initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
           animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
           transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
@@ -129,7 +144,7 @@ export default function Home() {
           VELASTRO
         </motion.h1>
         
-        <div className="text-sm md:text-lg text-neutral-300 font-normal tracking-[0.3em] mb-16 uppercase overflow-hidden flex gap-2 flex-wrap justify-center">
+        <div className="relative z-10 text-sm md:text-lg text-neutral-300 font-normal tracking-[0.3em] mb-16 uppercase overflow-hidden flex gap-2 flex-wrap justify-center">
           {titleText.map((word, i) => (
             <motion.span
               key={i}
